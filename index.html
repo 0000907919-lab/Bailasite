@@ -238,9 +238,9 @@ h1,h2,h3,.sec-title,.hero-title,.pm-name,.cart-hd-title,.ck-hd h2,.sobre-title{f
   display:flex;align-items:center;
   margin-top:110px;
 }
-.hero-slides{position:absolute;inset:0;width:100%;height:100%}
-.hero-slide{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1s ease}
-.hero-slide.active{opacity:1}
+.hero-slides{position:absolute;inset:0;width:100%;height:100%;overflow:hidden}
+.hero-slide{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1s ease;pointer-events:none}
+.hero-slide.active{opacity:1;pointer-events:auto}
 .hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.5) 35%,rgba(0,0,0,.1) 100%);z-index:1}
