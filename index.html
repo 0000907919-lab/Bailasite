@@ -965,10 +965,10 @@ footer{background:var(--text);color:#fff;padding:3.5rem 2rem 2rem}
 <section id="home" class="hero-banner">
   <div class="hero-slides" id="heroSlides">
     <div class="hero-slide active">
-      <img src="imagens/banner1.jpg" alt="Bailla Fitness — Lançamento"/>
+      <img src="imagens/banner1.jpg.jpeg" alt="Bailla Fitness — Lançamento"/>
     </div>
     <div class="hero-slide">
-      <img src="imagens/banner2.jpg" alt="Bailla Fitness — Nova Coleção"/>
+      <img src="imagens/banner2.jpg.jpg" alt="Bailla Fitness — Nova Coleção"/>
     </div>
   </div>
   <div class="hero-overlay"></div>
@@ -985,7 +985,7 @@ footer{background:var(--text);color:#fff;padding:3.5rem 2rem 2rem}
 
 <!-- BANNER CUPOM -->
 <div class="banner-cupom">
-  <img src="imagens/banner2.jpg" alt="10% OFF - Use o cupom PRIMEIRACOMPRA"/>
+  <img src="imagens/banner2.jpg.jpg" alt="10% OFF - Use o cupom PRIMEIRACOMPRA"/>
 </div>
 
 <!-- CATEGORIAS -->
@@ -1226,6 +1226,7 @@ footer{background:var(--text);color:#fff;padding:3.5rem 2rem 2rem}
           </div>
           <label>Forma de pagamento
             <select id="ckPay">
+              <option value="pix">PIX (gera QR Code)</option>
               <option value="cartao">Cartão de crédito (Mercado Pago)</option>
             </select>
           </label>
@@ -1970,15 +1971,27 @@ document.addEventListener('DOMContentLoaded',()=>{ updateAuthBadge(); });
 <script>
 const MP_LINK = 'https://link.mercadopago.com.br/bailamodafitness';
 
-// Sobrescreve o confirmOrder do app.js para usar só MP
+// Chave PIX da loja — altere aqui se mudar
+const PIX_KEY = '35984692855'; // número WhatsApp como chave PIX
+
 function confirmOrder(){
   if(!cart.length){ alert('Sua sacola está vazia.'); return; }
+
+  // ── EXIGE LOGIN ──
+  const user = typeof getUser === 'function' ? getUser() : null;
+  if(!user){
+    closeCheckout();
+    showToast('Faça login ou cadastre-se para continuar. 👤');
+    setTimeout(()=>{ if(typeof toggleAuth==='function') toggleAuth(); }, 400);
+    return;
+  }
 
   const name  = (el('ckName')?.value||'').trim();
   const phone = (el('ckPhone')?.value||'').trim();
   const addr  = (el('ckAddr')?.value||'').trim();
   const num   = (el('ckNumero')?.value||'').trim();
   const cidade= (el('ckCidade')?.value||'').trim();
+  const payMethod = (el('ckPay')?.value||'cartao');
 
   if(!name||!phone){
     alert('Preencha Nome e WhatsApp para continuar.');
@@ -1989,8 +2002,8 @@ function confirmOrder(){
     return;
   }
 
-  const total   = parseBR(el('ckTotalLbl')?.textContent||'0');
-  const endereco= `${addr}, ${num} — ${cidade}`;
+  const total    = parseBR(el('ckTotalLbl')?.textContent||'0');
+  const endereco = `${addr}, ${num} — ${cidade}`;
 
   // Envia para a planilha
   if(typeof enviarParaPlanilha === 'function'){
@@ -2007,17 +2020,138 @@ function confirmOrder(){
 
   closeCheckout();
 
-  // Abre o Mercado Pago — valor é travado pelo lojista no painel do MP
-  window.open(MP_LINK, '_blank', 'noopener');
+  if(payMethod === 'pix'){
+    // ── PIX: gera QR Code ──
+    openPixModal(total);
+  } else {
+    // ── CARTÃO: abre Mercado Pago ──
+    window.open(MP_LINK, '_blank', 'noopener');
+    showToast('Redirecionando para o Mercado Pago... 💳');
+    setTimeout(()=>{
+      alert(
+        '✅ Pedido registrado!\n\n' +
+        '💳 O pagamento será processado pelo Mercado Pago.\n\n' +
+        'Após pagar, envie o comprovante no WhatsApp:\n(35) 9 8469-2855'
+      );
+    }, 600);
+  }
+}
 
-  showToast('Redirecionando para o Mercado Pago... 💳');
-  setTimeout(()=>{
-    alert(
-      '✅ Pedido registrado!\n\n' +
-      '💳 O pagamento será processado pelo Mercado Pago.\n\n' +
-      'Após pagar, envie o comprovante no WhatsApp:\n(35) 9 8469-2855'
-    );
-  }, 600);
+/* ── Abre o modal PIX com QR Code gerado ── */
+function openPixModal(total){
+  const ov = document.getElementById('pixOv');
+  if(!ov) return;
+
+  // Monta payload PIX (BR Code estático)
+  const valor = (Number(total)||0).toFixed(2);
+  const pixPayload = gerarPixPayload(PIX_KEY, 'BAILLA FITNESS', 'Pocos de Caldas', valor);
+
+  // Exibe o valor
+  const amtEl = document.getElementById('pixAmountLbl');
+  if(amtEl) amtEl.textContent = fmtBR(total);
+
+  // Exibe o código copia-e-cola
+  const codeEl  = document.getElementById('pixCode');
+  const shortEl = document.getElementById('pixCodeShort');
+  if(codeEl)  codeEl.value = pixPayload;
+  if(shortEl) shortEl.textContent = pixPayload.slice(0,40)+'…';
+
+  // Gera QR Code via BaillaQR (lib pura JS já carregada)
+  const canvas = document.getElementById('pixCanvas');
+  if(canvas && window.BaillaQR){
+    const svg = BaillaQR.toSVG(pixPayload, 260);
+    const wrap = canvas.parentElement;
+    canvas.style.display = 'none';
+    // Remove SVG anterior se existir
+    wrap.querySelectorAll('svg').forEach(s=>s.remove());
+    const div = document.createElement('div');
+    div.innerHTML = svg;
+    wrap.appendChild(div.firstChild);
+  }
+
+  // Timer 30 min
+  startPixTimer();
+
+  ov.classList.add('on');
+  ov.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePix(){
+  const ov = document.getElementById('pixOv');
+  if(!ov) return;
+  ov.classList.remove('on');
+  ov.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+  clearInterval(window._pixTimerInterval);
+}
+
+function copyPix(){
+  const code = document.getElementById('pixCode')?.value||'';
+  if(!code) return;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn = document.getElementById('pixCopyBtn');
+    if(btn){ btn.textContent='Copiado ✓'; btn.classList.add('copied'); }
+    setTimeout(()=>{
+      if(btn){ btn.textContent='Copiar'; btn.classList.remove('copied'); }
+    }, 2500);
+  }).catch(()=>{
+    // fallback
+    const ta = document.getElementById('pixCode');
+    if(ta){ ta.select(); document.execCommand('copy'); }
+  });
+}
+
+function startPixTimer(){
+  clearInterval(window._pixTimerInterval);
+  let secs = 30*60;
+  const timerEl = document.getElementById('pixTimer');
+  function tick(){
+    if(!timerEl) return;
+    const m = Math.floor(secs/60).toString().padStart(2,'0');
+    const s = (secs%60).toString().padStart(2,'0');
+    timerEl.textContent = m+':'+s;
+    if(secs<=0){
+      clearInterval(window._pixTimerInterval);
+      const st = document.getElementById('pixStatus');
+      if(st){ st.textContent='Código expirado'; st.className='pix-status expired'; }
+      return;
+    }
+    secs--;
+  }
+  tick();
+  window._pixTimerInterval = setInterval(tick, 1000);
+}
+
+/* ── Gerador de payload PIX BR Code estático (EMV) ── */
+function gerarPixPayload(chave, nome, cidade, valor){
+  function tlv(id, val){
+    const len = val.length.toString().padStart(2,'0');
+    return id + len + val;
+  }
+  const gui    = tlv('00','BR.GOV.BCB.PIX');
+  const key    = tlv('01', chave);
+  const mcc    = tlv('00','0000');
+  const merch  = tlv('26', gui + key);
+  const cur    = tlv('53','986');
+  const amt    = tlv('54', valor);
+  const cntry  = tlv('58','BR');
+  const nm     = tlv('59', nome.slice(0,25));
+  const cty    = tlv('60', cidade.slice(0,15));
+  const addFld = tlv('62', tlv('05','***'));
+
+  const payload = tlv('00','01') + merch + mcc + cur + amt + cntry + nm + cty + addFld + '6304';
+
+  // CRC-16/CCITT-FALSE
+  function crc16(str){
+    let crc = 0xFFFF;
+    for(let i=0;i<str.length;i++){
+      crc ^= str.charCodeAt(i)<<8;
+      for(let j=0;j<8;j++) crc=(crc&0x8000)?((crc<<1)^0x1021)&0xFFFF:(crc<<1)&0xFFFF;
+    }
+    return crc.toString(16).toUpperCase().padStart(4,'0');
+  }
+  return payload + crc16(payload);
 }
 </script>
 </body>
