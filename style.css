@@ -221,50 +221,10 @@ h1,h2,h3,.sec-title,.hero-title,.pm-name,.cart-hd-title,.ck-hd h2,.sobre-title{f
   background:#4caf50;border:2px solid var(--creme);
 }
 
-/* ═════════ HERO SLIDER COMPLETO ═════════ */
-.hero-banner{
-  position: absolute;
-  top: 110px;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  z-index: 5;
-}
+/* ════════ BANNER CUPOM ════════ */
+.banner-cupom{width:100%;overflow:hidden;line-height:0}
+.banner-cupom img{width:100%;display:block;object-fit:cover}
 
-/* 🔥 ESSA PARTE É A CHAVE */
-.hero-track{
-  display: flex;
-  height: 100%;
-  width: 100%;
-}
-
-/* cada slide ocupa 100% da tela */
-.hero-slide{
-  min-width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  flex-shrink: 0;
-}
-
-/* overlay */
-.hero-overlay{
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
-  z-index: 1;
-}
-
-/* conteúdo */
-.hero-content{
-  position: absolute;
-  top: 50%;
-  left: 60px;
-  transform: translateY(-50%);
-  z-index: 2;
-  color: #fff;
-}
 /* ════════ CATEGORIAS ════════ */
 .cat-section{padding:4rem;background:var(--branco)}
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1200px;margin:0 auto}
@@ -657,34 +617,42 @@ footer{background:var(--text);color:#fff;padding:3.5rem 2rem 2rem}
   .pm-body{grid-template-columns:1fr}
   .sobre-inner{max-width:100%}
 }
-/* ===== FIX HERO NO TOPO (MESMO NO FINAL DO HTML) ===== */
+/* ════════ HERO BANNER SLIDER ════════ */
 .hero-banner{
-  position: absolute;
-  top: 110px;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  min-height: 600px;
-  z-index: 5;
+  position:relative;
+  width:100%;
+  height:100vh;
+  min-height:600px;
+  overflow:hidden;
+  background:var(--marfim);
+  display:flex;
+  align-items:center;
+  margin-top:110px;
 }
-
-/* empurra o resto do site pra baixo */
-body{
-  padding-top: 100vh;
+.hero-slides{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
 }
-/* ===== FORÇA SLIDER FUNCIONAR ===== */
-
-.hero-track{
-  display: flex !important;
-  flex-direction: row !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
 .hero-slide{
-  min-width: 100% !important;
-  width: 100% !important;
-  height: 100% !important;
-  flex-shrink: 0 !important;
-  display: block !important;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  transition:opacity 1s ease;
+  pointer-events:none;
+}
+.hero-slide.active{
+  opacity:1;
+  pointer-events:auto;
+}
+.hero-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  display:block;
 }
