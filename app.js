@@ -10,7 +10,10 @@ const CHX = {
   "Verde Militar":"#4a5240","Verde":"#4a5240","Rosa Barbie":"#e75480",
   "Preto com Branco":"#333","Petróleo com Branco":"#1b4a52","Petróleo":"#1b4a52",
   "Petroleo com Branco":"#1b4a52","Petroleo":"#1b4a52",
-  "Bordô com Branco":"#5a1528","Bordô":"#5a1528","Bordo com Branco":"#5a1528","Bordo":"#5a1528"
+  "Bordô com Branco":"#5a1528","Bordô":"#5a1528","Bordo com Branco":"#5a1528","Bordo":"#5a1528",
+  "Lavanda":"#b39ddb","Rosa Claro":"#f4a7b9","Rosa Chiclete":"#e91e8c","Rosa Iogurte":"#f8c8d4",
+  "Verde Menta":"#80cbc4","Azul Bebe com Marinho":"#90caf9","Azul Bebê com Marinho":"#90caf9",
+  "Expresso":"#4e342e","Expresso com Creme":"#6d4c41"
 };
 
 let cart = [];
