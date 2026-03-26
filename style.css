@@ -526,7 +526,8 @@ h1,h2,h3,.sec-title,.hero-title,.pm-name,.cart-hd-title,.ck-hd h2,.sobre-title{f
 .pedido-total{font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;color:var(--text)}
 #btnConta.logado::after{content:"";position:absolute;bottom:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#4caf50;border:2px solid var(--creme)}
 
-/* ════════ PIX VISUAL (CORRIGIDO) ════════ */
+/* ════════ PIX VISUAL (CORRIGIDO E COMPLETO) ════════ */
+
 .pix-overlay{
     display:none;
     position:fixed;
@@ -538,7 +539,6 @@ h1,h2,h3,.sec-title,.hero-title,.pm-name,.cart-hd-title,.ck-hd h2,.sobre-title{f
     padding:12px;
     backdrop-filter:blur(4px);
 }
-
 .pix-overlay.on{display:flex;}
 
 .pix-modal{
@@ -703,35 +703,36 @@ h1,h2,h3,.sec-title,.hero-title,.pm-name,.cart-hd-title,.ck-hd h2,.sobre-title{f
     font-size:12px;
     font-weight:700;
     white-space:nowrap;
-    flex-shrink:0;
     transition:background .2s;
 }
 .pix-copy-btn:hover{background:#333;}
 .pix-copy-btn.copied{background:var(--pix);}
 
-/* ════════ QR FIX — CORREÇÃO COMPLETA ════════ */
+/* ════════ QR FIX — ESSA PARTE QUE FAZ O QR FUNCIONAR! ════════ */
+
 .pix-qr-wrap{
     width:100%;
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:20px !important;     /* Quiet zone branca */
-    background:#fff !important;
+    padding:22px !important;
+    background:#ffffff !important;
+    overflow:visible !important;
 }
 
-/* Garante QR perfeito */
+/* SVG ou canvas em tamanho FIXO — evita deformação */
 .pix-qr-wrap svg,
 .pix-qr-wrap canvas{
-    width:260px !important;
-    height:260px !important;
+    width:330px !important;
+    height:330px !important;
     max-width:none !important;
     max-height:none !important;
-    border-radius:0 !important;   /* sem arredondar */
-    box-shadow:none !important;   /* sem sombra */
+    border-radius:0 !important;
+    box-shadow:none !important;
     image-rendering:pixelated !important;
 }
 
-/* Remove qualquer regra antiga que deformava o QR */
+/* Remove QUALQUER regra antiga que quebrava o QR */
 .pix-qr-wrap img,
 .pix-qr-wrap svg,
 .pix-qr-wrap canvas{
@@ -762,6 +763,7 @@ h1,h2,h3,.sec-title,.hero-title,.pm-name,.cart-hd-title,.ck-hd h2,.sobre-title{f
     transition:background .18s;
 }
 .pix-done-btn:hover{background:#eee;}
+
 /* ════════ TOAST ════════ */
 #toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:#fff;padding:.75rem 2rem;font-size:.62rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;border-left:2px solid var(--accent);opacity:0;transition:all .35s;z-index:9999;white-space:nowrap}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
