@@ -602,127 +602,125 @@ function applyShipping(){
   el('ckEtaLbl').textContent=q?`Prazo estimado: ${(opt==='SEDEX')?q.etaSed:q.etaPac}`:'';
 }
 
-/* =========================================================
-   PIX — VERSÃO FINAL ULTRA-COMPATÍVEL
+=========================================================
+   PIX — BR Code + QR Code
    ========================================================= */
-
-function _renderQRSVG(text) {
-  const wrap = document.querySelector('.pix-qr-wrap') || el('pixCanvas')?.parentElement;
-  if (!wrap) return;
-
-  // 1. Limpeza total e fundo branco puro para contraste
-  wrap.style.background = "#ffffff";
-  wrap.style.padding = "15px"; 
-  wrap.style.borderRadius = "8px";
-
-  try {
-    if (!window.BaillaQR) throw new Error('Lib faltante');
-
-    // 2. Gerar com margem interna (margin: 2) para ajudar o foco da câmera
-    // Aumentamos para 350 para garantir que cada pixel seja bem definido
-    const svg = window.BaillaQR.toSVG(text, 350, { margin: 2 });
+function _renderQRSVG(text){
+  const wrap = el('pixCanvas')?.parentElement;
+  if(!wrap) return;
+  wrap.innerHTML='<div style="width:260px;height:260px;background:#f5f5f5;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#aaa">gerando QR…</div>';
+  try{
+    const svg = window.BaillaQR.toSVG(text, 280);
     wrap.innerHTML = svg;
-
     const s = wrap.querySelector('svg');
-    if (s) {
-      s.style.display = 'block';
-      s.style.width = '100%';
-      s.style.height = 'auto';
-      // Força o renderizador a não "embaçar" os cantos (essencial para QR Codes)
-      s.style.imageRendering = 'pixelated';
-      s.style.shapeRendering = 'crispEdges';
-    }
-  } catch (e) {
-    wrap.innerHTML = "<p>Erro ao gerar QR. Use o Copia e Cola.</p>";
+    if(s) s.style.cssText = 'border-radius:12px;box-shadow:0 2px 16px rgba(0,0,0,.1);display:block;max-width:100%;';
+  }catch(e){
+    console.error('[QR]',e);
+    wrap.innerHTML='<p style="font-size:12px;color:#888;text-align:center;padding:20px;border:1px solid #eee;border-radius:12px;">Use o código copia e cola acima.</p>';
   }
 }
-
-/* 3. Simplificação do Payload para diminuir a densidade do QR Code */
-function buildPixPayload(amount) {
-  const valor = Number(amount || 0).toFixed(2);
-  
-  // REMOVEMOS acentos e espaços extras que aumentam o tamanho do código
-  const name  = "BAILLA FITNESS"; // Nome curto = QR Code menos denso
-  const city  = "SAO PAULO";
-  const key   = PIX_KEY.trim();
-
-  const merchant = _f('26', _f('00', 'BR.GOV.BCB.PIX') + _f('01', key));
-  const adf = _f('62', _f('05', '***')); 
-
-  const body =
-    _f('00', '01') +
-    merchant +
-    _f('52', '0000') +
-    _f('53', '986') +
-    _f('54', valor) +
-    _f('58', 'BR') +
-    _f('59', name) +
-    _f('60', city) +
-    adf +
-    '6304';
-
-  return body + _crc(body);
-}/* =========================================================
-   PIX — VERSÃO FINAL ULTRA-COMPATÍVEL
-   ========================================================= */
-
-function _renderQRSVG(text) {
-  const wrap = document.querySelector('.pix-qr-wrap') || el('pixCanvas')?.parentElement;
-  if (!wrap) return;
-
-  // 1. Limpeza total e fundo branco puro para contraste
-  wrap.style.background = "#ffffff";
-  wrap.style.padding = "15px"; 
-  wrap.style.borderRadius = "8px";
-
-  try {
-    if (!window.BaillaQR) throw new Error('Lib faltante');
-
-    // 2. Gerar com margem interna (margin: 2) para ajudar o foco da câmera
-    // Aumentamos para 350 para garantir que cada pixel seja bem definido
-    const svg = window.BaillaQR.toSVG(text, 350, { margin: 2 });
-    wrap.innerHTML = svg;
-
-    const s = wrap.querySelector('svg');
-    if (s) {
-      s.style.display = 'block';
-      s.style.width = '100%';
-      s.style.height = 'auto';
-      // Força o renderizador a não "embaçar" os cantos (essencial para QR Codes)
-      s.style.imageRendering = 'pixelated';
-      s.style.shapeRendering = 'crispEdges';
-    }
-  } catch (e) {
-    wrap.innerHTML = "<p>Erro ao gerar QR. Use o Copia e Cola.</p>";
+ 
+const PIX_KEY  = 'bailamodafitness@hotmail.com';
+const PIX_NAME = 'BAILLA MODA FITNESS';
+const PIX_CITY = 'SAO PAULO';
+ 
+function _f(id,val){ const v=String(val); return id+String(v.length).padStart(2,'0')+v; }
+ 
+function _crc(str){
+  let c=0xFFFF;
+  for(let i=0;i<str.length;i++){
+    c^=str.charCodeAt(i)<<8;
+    for(let j=0;j<8;j++) c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF;
   }
+  return c.toString(16).toUpperCase().padStart(4,'0');
 }
-
-/* 3. Simplificação do Payload para diminuir a densidade do QR Code */
-function buildPixPayload(amount) {
-  const valor = Number(amount || 0).toFixed(2);
-  
-  // REMOVEMOS acentos e espaços extras que aumentam o tamanho do código
-  const name  = "BAILLA FITNESS"; // Nome curto = QR Code menos denso
-  const city  = "SAO PAULO";
-  const key   = PIX_KEY.trim();
-
-  const merchant = _f('26', _f('00', 'BR.GOV.BCB.PIX') + _f('01', key));
-  const adf = _f('62', _f('05', '***')); 
-
-  const body =
-    _f('00', '01') +
-    merchant +
-    _f('52', '0000') +
-    _f('53', '986') +
-    _f('54', valor) +
-    _f('58', 'BR') +
-    _f('59', name) +
-    _f('60', city) +
-    adf +
-    '6304';
-
-  return body + _crc(body);
+ 
+function _san(str,max){
+  return String(str||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7E]/g,'').replace(/[|"'<>&]/g,'').trim().toUpperCase().substring(0,max);
 }
+ 
+function _sanKey(str,max){
+  return String(str||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7E]/g,'').replace(/[|"'<>&\s]/g,'').substring(0,max);
+}
+ 
+function buildPixPayload(amount){
+  const valor=Number(amount||0).toFixed(2);
+  const name=_san(PIX_NAME,25);
+  const city=_san(PIX_CITY,15);
+  const key=_sanKey(PIX_KEY,77);
+  const mai=_f('26',_f('00','br.gov.bcb.pix')+_f('01',key));
+  const adf=_f('62',_f('05','***'));
+  const body=
+    _f('00','01')+_f('01','12')+mai+
+    _f('52','0000')+_f('53','986')+_f('54',valor)+
+    _f('58','BR')+_f('59',name)+_f('60',city)+adf+'6304';
+  return body+_crc(body);
+}
+ 
+let _pixTimerRef=null;
+ 
+function _startTimer(){
+  const timerEl=el('pixTimer'); if(!timerEl) return;
+  clearInterval(_pixTimerRef);
+  let secs=30*60;
+  _pixTimerRef=setInterval(()=>{
+    secs--;
+    if(secs<=0){
+      clearInterval(_pixTimerRef);
+      timerEl.textContent='expirado';
+      const st=el('pixStatus');
+      if(st){ st.textContent='código expirado'; st.className='pix-status expired'; }
+      return;
+    }
+    timerEl.textContent=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');
+  },1000);
+}
+ 
+function openPix(amount){
+  const total=Number(amount||0);
+  const payload=buildPixPayload(total);
+  const amtEl=el('pixAmountLbl'); if(amtEl) amtEl.textContent=fmtBR(total);
+  const stEl=el('pixStatus'); if(stEl){ stEl.textContent='aguardando pagamento'; stEl.className='pix-status waiting'; }
+  const codeEl=el('pixCode'); if(codeEl) codeEl.value=payload;
+  const shortEl=el('pixCodeShort'); if(shortEl) shortEl.textContent=payload.slice(0,34)+'…';
+  const ov=el('pixOv'); if(ov){ ov.classList.add('on'); ov.setAttribute('aria-hidden','false'); }
+  _renderQRSVG(payload);
+  _startTimer();
+}
+ 
+function closePix(){
+  clearInterval(_pixTimerRef);
+  const ov=el('pixOv');
+  if(ov){ ov.classList.remove('on'); ov.setAttribute('aria-hidden','true'); }
+}
+ 
+function copyPix(){
+  const ta=el('pixCode'); if(!ta) return;
+  const code=ta.value;
+  if(!code||code.length<10){ alert('Código Pix não foi gerado ainda.'); return; }
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(code).then(_flashCopy).catch(()=>_execCopy(code));
+  } else { _execCopy(code); }
+}
+ 
+function _execCopy(text){
+  const tmp=document.createElement('textarea');
+  tmp.value=text;
+  tmp.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+  document.body.appendChild(tmp);
+  tmp.focus(); tmp.select();
+  try{ document.execCommand('copy'); _flashCopy(); }
+  catch(e){ alert('Não foi possível copiar automaticamente.\nSelecione e copie o código manualmente.'); }
+  document.body.removeChild(tmp);
+}
+ 
+function _flashCopy(){
+  const btn=el('pixCopyBtn'); if(!btn) return;
+  const orig=btn.textContent;
+  btn.textContent='Copiado ✓'; btn.classList.add('copied');
+  setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('copied'); },2500);
+}
+ 
    /* =========================================================
    CUPOM DE DESCONTO
    ========================================================= */
