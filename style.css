@@ -856,3 +856,10 @@ footer{background:var(--text);color:#fff;padding:3.5rem 2rem 2rem}
   object-position:center top;
   display:block;
 }
+.pix-modal {
+    overflow: visible !important;
+}
+
+.pix-qr-wrap {
+    overflow: visible !important;
+}
