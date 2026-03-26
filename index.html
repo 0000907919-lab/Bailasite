@@ -732,8 +732,11 @@ footer{background:var(--text);color:#fff;padding:3.5rem 2rem 2rem}
   #toast{font-size:.55rem;padding:.6rem 1.2rem;white-space:normal;text-align:center;max-width:90vw}
 
   /* PIX modal */
-  .pix-modal{border-radius:16px 16px 0 0}
-  .pix-overlay{padding:0;align-items:flex-end}
+ <div class="pix-qr-wrap">
+    <div class="pix-qr-box">
+        <canvas id="pixCanvas"></canvas>
+    </div>
+</div>
 
   /* Auth modal */
   .auth-modal{width:100%;max-width:100%;border-radius:16px 16px 0 0;top:auto;bottom:0;transform:none;left:0}
