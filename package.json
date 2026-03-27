@@ -1,0 +1,12 @@
+{
+  "name": "bailla-backend",
+  "version": "1.0.0",
+  "description": "Backend Bailla Fitness — integração Mercado Pago",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
