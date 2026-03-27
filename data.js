@@ -7,7 +7,7 @@ window.SITE_DATA = {
   "Sunset": [
     {
       name: "Shorts Vanessa",
-      price: 89.90,
+      price: 64.9,
       rating: 4.5,
       desc: "Shorts Vanessa Bailla Fitness. Cós alto com detalhe contrastante, tecido Supplex com toque suave e ótima sustentação. Estilo e conforto para o treino.",
       colors: [
@@ -30,7 +30,7 @@ window.SITE_DATA = {
   "Sunrise": [
     {
       name: "Top Isadora",
-      price: 89.90,
+      price: 54.9,
       rating: 4.5,
       desc: "Top Isadora Bailla Fitness. Bojo removível com forro duplo, alças finas reguláveis e tecido Supplex de alta compressão. Elegante e funcional.",
       colors: [
@@ -52,7 +52,7 @@ window.SITE_DATA = {
     },
     {
       name: "Legging Isa",
-      price: 129.90,
+      price: 89.9,
       rating: 4.6,
       desc: "Legging Isa Bailla Fitness. Cintura alta com cós largo, tecido de alta compressão e bolso embutido. Define o corpo com elegância.",
       colors: [
@@ -73,7 +73,7 @@ window.SITE_DATA = {
     },
     {
       name: "Cropped Naty",
-      price: 79.90,
+      price: 54.9,
       rating: 4.4,
       desc: "Cropped Naty Bailla Fitness. Top cropped com bojo removível, alças largas e tecido com proteção UV. Conforto e estilo para qualquer treino.",
       colors: [
@@ -94,7 +94,7 @@ window.SITE_DATA = {
   "Summer": [
     {
       name: "Shorts Basic",
-      price: 79.90,
+      price: 59.9,
       rating: 4.5,
       desc: "Shorts Basic Bailla Fitness. Modelo básico com cós duplo, tecido leve e elástico de ótima sustentação. Versatilidade para todos os treinos.",
       colors: [
@@ -114,7 +114,7 @@ window.SITE_DATA = {
     },
     {
       name: "Cropped Vivi",
-      price: 79.90,
+      price: 49.9,
       rating: 4.4,
       desc: "Cropped Vivi Bailla Fitness. Top cropped com bojo removível, tecido dry-fit de secagem rápida e corte anatômico. Para treinar sem limites.",
       colors: [
@@ -130,7 +130,7 @@ window.SITE_DATA = {
     },
     {
       name: "Cropped Carla",
-      price: 79.90,
+      price: 49.9,
       rating: 4.3,
       desc: "Cropped Carla Bailla Fitness. Top cropped com bojo removível, alças largas e tecido com proteção UV. Conforto e estilo para qualquer treino.",
       colors: [
@@ -151,7 +151,7 @@ window.SITE_DATA = {
   "Move": [
     {
       name: "Cropped Gigi",
-      price: 79.90,
+      price: 69.9,
       rating: 4.4,
       desc: "Cropped Gigi Bailla Fitness. Top cropped com detalhes contrastantes, bojo removível e tecido de alta compressão. Estilo e performance para o treino.",
       colors: [
@@ -169,7 +169,7 @@ window.SITE_DATA = {
     },
     {
       name: "Cropped Bianca",
-      price: 79.90,
+      price: 59.9,
       rating: 4.4,
       desc: "Cropped Bianca Bailla Fitness. Top cropped esportivo com bojo embutido e tecido Supplex de alta performance. Ideal para treinos intensos.",
       colors: [
@@ -190,7 +190,7 @@ window.SITE_DATA = {
   "Harmony": [
     {
       name: "Macaquinho Antonia",
-      price: 119.90,
+      price: 99.9,
       rating: 4.6,
       desc: "Macaquinho Antonia Bailla Fitness. Tecido Dry-Fit de alta compressão, costura reforçada e alças reguláveis. Ideal para treinos intensos com muito estilo.",
       colors: [
@@ -219,7 +219,7 @@ window.SITE_DATA = {
     },
     {
       name: "Legging Basic",
-      price: 129.90,
+      price: 89.9,
       rating: 4.5,
       desc: "Legging Basic Bailla Fitness. Cintura alta com cós largo, tecido de alta compressão e ajuste perfeito para qualquer tipo de treino.",
       colors: [
@@ -248,7 +248,7 @@ window.SITE_DATA = {
     },
     {
       name: "Cropped Helena",
-      price: 79.90,
+      price: 54.9,
       rating: 4.4,
       desc: "Cropped Helena Bailla Fitness. Top cropped com bojo removível, tecido macio e respirável com proteção UV. Delicado e funcional para todos os treinos.",
       colors: [
@@ -296,7 +296,7 @@ window.SITE_DATA = {
   "Euphoria": [
     {
       name: "Top Jess",
-      price: 89.90,
+      price: 49.9,
       rating: 4.5,
       desc: "Top Jess Bailla Fitness. Bojo removível com forro duplo, alças finas reguláveis e tecido Supplex de alta compressão. Elegante e funcional.",
       colors: [
@@ -315,7 +315,7 @@ window.SITE_DATA = {
     },
     {
       name: "Shorts Olivia",
-      price: 89.90,
+      price: 64.9,
       rating: 4.4,
       desc: "Shorts Olivia Bailla Fitness. Cós alto com elástico reforçado, tecido leve e respirável. Ideal para treinos funcionais, crossfit e corrida.",
       colors: [
@@ -344,7 +344,7 @@ window.SITE_DATA = {
     },
     {
       name: "Legging Julia",
-      price: 129.90,
+      price: 89.9,
       rating: 4.6,
       desc: "Legging Julia Bailla Fitness. Cintura alta com elástico largo, detalhes contrastantes nas laterais e bolso no cós. Define a silhueta com perfeição.",
       colors: [
@@ -372,7 +372,7 @@ window.SITE_DATA = {
     },
     {
       name: "Cropped Mariana",
-      price: 79.90,
+      price: 49.9,
       rating: 4.4,
       desc: "Cropped Mariana Bailla Fitness. Top cropped com bojo removível, alças largas e tecido com proteção UV. Conforto e estilo para qualquer treino.",
       colors: [
@@ -403,7 +403,7 @@ window.SITE_DATA = {
   "Blend": [
     {
       name: "Legging Basic",
-      price: 129.90,
+      price: 89.9,
       rating: 4.5,
       desc: "Legging Basic Bailla Fitness. Cintura alta com cós largo, tecido de alta compressão e ajuste perfeito para qualquer tipo de treino.",
       colors: [
@@ -428,7 +428,7 @@ window.SITE_DATA = {
   "Basic": [
     {
       name: "Legging Basic",
-      price: 129.90,
+      price: 89.9,
       rating: 4.5,
       desc: "Legging Basic Bailla Fitness. Cintura alta com cós largo, tecido de alta compressão e ajuste perfeito para qualquer tipo de treino.",
       colors: [
@@ -451,7 +451,7 @@ window.SITE_DATA = {
   "Aura": [
     {
       name: "Macaquinho Liss",
-      price: 119.90,
+      price: 109.9,
       rating: 4.6,
       desc: "Macaquinho Liss Bailla Fitness. Design exclusivo com detalhes em contraste, bojo embutido e abertura com zíper. Elegância para cada movimento.",
       colors: [
