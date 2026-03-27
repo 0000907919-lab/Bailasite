@@ -10,7 +10,10 @@ const CHX = {
   "Verde Militar":"#4a5240","Verde":"#4a5240","Rosa Barbie":"#e75480",
   "Preto com Branco":"#333","Petróleo com Branco":"#1b4a52","Petróleo":"#1b4a52",
   "Petroleo com Branco":"#1b4a52","Petroleo":"#1b4a52",
-  "Bordô com Branco":"#5a1528","Bordô":"#5a1528","Bordo com Branco":"#5a1528","Bordo":"#5a1528"
+  "Bordô com Branco":"#5a1528","Bordô":"#5a1528","Bordo com Branco":"#5a1528","Bordo":"#5a1528",
+  "Lavanda":"#b39ddb","Rosa Claro":"#f4a7b9","Rosa Chiclete":"#e91e8c","Rosa Iogurte":"#f8c8d4",
+  "Verde Menta":"#80cbc4","Azul Bebe com Marinho":"#90caf9","Azul Bebê com Marinho":"#90caf9",
+  "Expresso":"#4e342e","Expresso com Creme":"#6d4c41"
 };
 
 let cart = [];
@@ -728,7 +731,38 @@ function _recalcTotal(){
 }
 
 /* =========================================================
-   Confirmar pedido — com integração Google Sheets 🔥
+   Links Mercado Pago por produto
+   ========================================================= */
+const MP_LINKS = {
+  'legging basic':       'https://mpago.li/1KhNEDn',
+  'legging isa':         'https://mpago.li/1KhNEDn',
+  'legging julia':       'https://mpago.li/1KhNEDn',
+  'top jess':            'https://mpago.li/2t95KjS',
+  'cropped carla':       'https://mpago.li/2t95KjS',
+  'cropped vivi':        'https://mpago.li/2t95KjS',
+  'cropped mariana':     'https://mpago.li/2t95KjS',
+  'top isadora':         'https://mpago.li/1rvQyQ7',
+  'cropped naty':        'https://mpago.li/1rvQyQ7',
+  'cropped helena':      'https://mpago.li/1rvQyQ7',
+  'cropped bianca':      'https://mpago.li/2ebLVjb',
+  'shorts basic':        'https://mpago.li/2ebLVjb',
+  'shorts vanessa':      'https://mpago.li/1Lg6NjW',
+  'shorts olivia':       'https://mpago.li/1Lg6NjW',
+  'cropped gigi':        'https://mpago.li/17KdUhW',
+  'macaquinho antonia':  'https://mpago.li/2NCVeEz',
+  'macaquinho liss':     'https://mpago.li/1fCrebB',
+};
+
+function getMPLink(){
+  for(const item of cart){
+    const key=(item.name||'').toLowerCase().trim();
+    if(MP_LINKS[key]) return MP_LINKS[key];
+  }
+  return 'https://link.mercadopago.com.br/bailamodafitness';
+}
+
+/* =========================================================
+   Confirmar pedido — Mercado Pago
    ========================================================= */
 function confirmOrder(){
   if(!cart.length){ alert('Sua sacola está vazia.'); return; }
@@ -743,34 +777,18 @@ function confirmOrder(){
   if(!addr||!num||!cidade){ alert('Preencha o endereço completo (rua, número e cidade).'); return; }
 
   const total=parseBR(el('ckTotalLbl').textContent);
-  const pay=(el('ckPay').value||'').trim().toLowerCase();
   const endereco=`${addr}, ${num} - ${cidade}`;
 
-  const MP_LINK='';
-  if(pay.includes('mercado')){
-    if(!MP_LINK){ alert('Link do Mercado Pago ainda não configurado.'); return; }
-    window.open(MP_LINK,'_blank','noopener');
-    alert('Abrimos o Mercado Pago. Envie o comprovante no WhatsApp após pagar.');
-    closeCheckout(); return;
-  }
-
-  if(pay.includes('pix')){
-    // 🔥 Envia para a planilha como Pendente
-    enviarParaPlanilha(name, phone, endereco, total);
-
-    // Registra no perfil local
-    if(typeof registrarPedido==='function'){
-      registrarPedido(cart.map(it=>({name:it.name,size:it.size,qty:it.qty})), fmtBR(total));
-    }
-    closeCheckout();
-    openPix(total);
-    return;
-  }
-
-  // Outros pagamentos — também registra na planilha
   enviarParaPlanilha(name, phone, endereco, total);
-  alert(`Pedido recebido!\nPagamento: ${pay}\nTotal: ${fmtBR(total)}`);
+
+  if(typeof registrarPedido==='function'){
+    registrarPedido(cart.map(it=>({name:it.name,size:it.size,qty:it.qty})), fmtBR(total));
+  }
+
+  const mpLink=getMPLink();
   closeCheckout();
+  window.open(mpLink,'_blank','noopener');
+  showToast('Redirecionando para o Mercado Pago ✓');
 }
 
 /* =========================================================
